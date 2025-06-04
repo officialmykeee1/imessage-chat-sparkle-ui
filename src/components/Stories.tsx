@@ -1,6 +1,4 @@
 
-import { ScrollArea } from "@/components/ui/scroll-area";
-
 interface Story {
   id: string;
   username: string;
@@ -14,45 +12,45 @@ const Stories = () => {
     {
       id: "your-story",
       username: "Your story",
-      avatar: "/lovable-uploads/c39e33f3-deea-48f2-9f37-e7faddd685ba.png",
+      avatar: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=400&fit=crop&crop=face",
       hasNewStory: false,
       isYourStory: true,
     },
     {
       id: "1",
-      username: "freetheeminist...",
-      avatar: "/lovable-uploads/c39e33f3-deea-48f2-9f37-e7faddd685ba.png",
+      username: "Emily",
+      avatar: "https://images.unsplash.com/photo-1494790108755-2616b332c63d?w=400&h=400&fit=crop&crop=face",
       hasNewStory: true,
     },
     {
       id: "2",
-      username: "kaicenat",
-      avatar: "/lovable-uploads/c39e33f3-deea-48f2-9f37-e7faddd685ba.png",
+      username: "Michael",
+      avatar: "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?w=400&h=400&fit=crop&crop=face",
       hasNewStory: true,
     },
     {
       id: "3",
-      username: "thewizard",
-      avatar: "/lovable-uploads/c39e33f3-deea-48f2-9f37-e7faddd685ba.png",
+      username: "Sarah",
+      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
       hasNewStory: true,
     },
     {
       id: "4",
-      username: "techguru",
-      avatar: "/lovable-uploads/c39e33f3-deea-48f2-9f37-e7faddd685ba.png",
+      username: "David",
+      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
       hasNewStory: true,
     },
     {
       id: "5",
-      username: "designpro",
-      avatar: "/lovable-uploads/c39e33f3-deea-48f2-9f37-e7faddd685ba.png",
+      username: "Jessica",
+      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=face",
       hasNewStory: true,
     },
   ];
 
   return (
     <div className="bg-white border-b border-gray-200 py-3">
-      <div className="overflow-x-auto scrollbar-hide">
+      <div className="overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <div className="flex space-x-4 px-4" style={{ width: 'max-content' }}>
           {stories.map((story) => (
             <div key={story.id} className="flex flex-col items-center space-y-1 flex-shrink-0">
@@ -87,15 +85,6 @@ const Stories = () => {
           ))}
         </div>
       </div>
-      <style jsx>{`
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
     </div>
   );
 };
