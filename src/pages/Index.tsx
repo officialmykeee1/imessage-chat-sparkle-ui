@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import ChatList from "@/components/ChatList";
+import Stories from "@/components/Stories";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 
@@ -22,6 +23,7 @@ const Index = () => {
             />
           </div>
         </div>
+        <Stories />
         <ChatList searchQuery={searchQuery} />
       </div>
     </div>
