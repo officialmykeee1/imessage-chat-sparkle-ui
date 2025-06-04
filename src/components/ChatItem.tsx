@@ -9,6 +9,7 @@ interface Chat {
   avatar: string;
   unreadCount?: number;
   isOnline?: boolean;
+  isSent?: boolean;
 }
 
 interface ChatItemProps {
@@ -20,40 +21,49 @@ const ChatItem = ({ chat }: ChatItemProps) => {
 
   return (
     <div
-      className={`px-6 py-4 cursor-pointer transition-all duration-150 ${
-        isPressed ? "bg-gray-100 scale-[0.98]" : "bg-white hover:bg-gray-50"
+      className={`px-4 py-3 cursor-pointer transition-all duration-100 ${
+        isPressed ? "bg-gray-200" : "bg-white hover:bg-gray-50"
       }`}
       onMouseDown={() => setIsPressed(true)}
       onMouseUp={() => setIsPressed(false)}
       onMouseLeave={() => setIsPressed(false)}
     >
-      <div className="flex items-center space-x-4">
-        <div className="relative">
-          <div className="w-14 h-14 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center text-2xl shadow-lg">
+      <div className="flex items-center space-x-3">
+        <div className="relative flex-shrink-0">
+          <div className="w-12 h-12 bg-gray-400 rounded-full flex items-center justify-center text-white text-sm font-medium">
             {chat.avatar}
           </div>
           {chat.isOnline && (
-            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
+            <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></div>
           )}
         </div>
         
         <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between mb-1">
-            <h3 className="font-semibold text-gray-900 truncate text-lg">
+          <div className="flex items-center justify-between mb-0.5">
+            <h3 className="font-semibold text-black text-base truncate">
               {chat.name}
             </h3>
-            <div className="flex items-center space-x-2">
-              <span className="text-sm text-gray-500 font-medium">
+            <div className="flex items-center space-x-1">
+              <span className="text-sm text-gray-500">
                 {chat.timestamp}
               </span>
               {chat.unreadCount && (
-                <div className="bg-blue-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
+                <div className="bg-blue-500 text-white text-xs font-medium rounded-full w-5 h-5 flex items-center justify-center ml-1">
                   {chat.unreadCount}
+                </div>
+              )}
+              {chat.isSent && !chat.unreadCount && (
+                <div className="w-4 h-4 ml-1">
+                  <svg viewBox="0 0 16 16" className="w-4 h-4 text-blue-500 fill-current">
+                    <path d="M15.854 5.354L6.5 14.707a.5.5 0 0 1-.708 0L2.146 11.06a.5.5 0 1 1 .708-.708L6.5 13.998l8.646-8.646a.5.5 0 0 1 .708.708z"/>
+                  </svg>
                 </div>
               )}
             </div>
           </div>
-          <p className="text-gray-600 truncate text-sm leading-relaxed">
+          <p className={`text-sm truncate ${
+            chat.unreadCount ? "text-black font-medium" : "text-gray-600"
+          }`}>
             {chat.lastMessage}
           </p>
         </div>

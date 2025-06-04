@@ -3,11 +3,10 @@ import ChatList from "@/components/ChatList";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-      <div className="container mx-auto px-4 py-8 max-w-md">
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Messages</h1>
-          <p className="text-gray-500">Stay connected with your conversations</p>
+    <div className="min-h-screen bg-gray-100">
+      <div className="max-w-sm mx-auto bg-white min-h-screen">
+        <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
+          <h1 className="text-xl font-semibold text-black text-center">Messages</h1>
         </div>
         <ChatList />
       </div>

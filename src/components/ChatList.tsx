@@ -10,6 +10,7 @@ interface Chat {
   avatar: string;
   unreadCount?: number;
   isOnline?: boolean;
+  isSent?: boolean;
 }
 
 const ChatList = () => {
@@ -17,18 +18,18 @@ const ChatList = () => {
     {
       id: "1",
       name: "Emma Wilson",
-      lastMessage: "Hey! Are we still on for dinner tonight? 🍽️",
+      lastMessage: "Hey! Are we still on for dinner tonight?",
       timestamp: "2:34 PM",
-      avatar: "👩‍💼",
+      avatar: "EW",
       unreadCount: 2,
       isOnline: true,
     },
     {
       id: "2",
-      name: "Family Group",
+      name: "Family",
       lastMessage: "Mom: Don't forget about Sunday brunch!",
       timestamp: "1:15 PM",
-      avatar: "👨‍👩‍👧‍👦",
+      avatar: "F",
       unreadCount: 5,
     },
     {
@@ -36,36 +37,38 @@ const ChatList = () => {
       name: "Alex Chen",
       lastMessage: "Thanks for the help with the project 👍",
       timestamp: "11:45 AM",
-      avatar: "👨‍💻",
+      avatar: "AC",
       isOnline: true,
+      isSent: true,
     },
     {
       id: "4",
       name: "Sarah Johnson",
       lastMessage: "The photos from the trip are amazing!",
       timestamp: "Yesterday",
-      avatar: "👩‍🎨",
+      avatar: "SJ",
     },
     {
       id: "5",
       name: "Work Team",
-      lastMessage: "Mike: Meeting moved to 3 PM tomorrow",
+      lastMessage: "You: Sounds good, see you tomorrow",
       timestamp: "Yesterday",
-      avatar: "💼",
+      avatar: "WT",
+      isSent: true,
     },
     {
       id: "6",
       name: "David Park",
       lastMessage: "Let's catch up this weekend",
       timestamp: "Monday",
-      avatar: "👨‍🎓",
+      avatar: "DP",
     },
     {
       id: "7",
-      name: "Coffee Chat ☕",
+      name: "Coffee Chat",
       lastMessage: "Lisa: That new café downtown is great!",
       timestamp: "Sunday",
-      avatar: "☕",
+      avatar: "CC",
       unreadCount: 1,
     },
     {
@@ -73,21 +76,21 @@ const ChatList = () => {
       name: "Mom",
       lastMessage: "Love you sweetie ❤️",
       timestamp: "Saturday",
-      avatar: "👵",
+      avatar: "M",
       isOnline: true,
     },
   ]);
 
   return (
-    <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
-      <div className="bg-gradient-to-r from-blue-500 to-indigo-600 px-6 py-4">
-        <h2 className="text-white font-semibold text-lg">Recent Conversations</h2>
-      </div>
-      <div className="divide-y divide-gray-100">
-        {chats.map((chat) => (
-          <ChatItem key={chat.id} chat={chat} />
-        ))}
-      </div>
+    <div className="bg-white">
+      {chats.map((chat, index) => (
+        <div key={chat.id}>
+          <ChatItem chat={chat} />
+          {index < chats.length - 1 && (
+            <div className="ml-16 border-b border-gray-200"></div>
+          )}
+        </div>
+      ))}
     </div>
   );
 };
