@@ -10,7 +10,7 @@ const Index = () => {
       <div className="max-w-sm mx-auto bg-white min-h-screen">
         <div className="bg-white px-4 py-3 border-b border-gray-200">
           <div className="flex items-center justify-between">
-            <MessageCircle className="h-6 w-6 text-gray-700" />
+            <MessageCircle className="h-6 w-6 text-blue-500 fill-blue-500" />
             <h1 className="text-xl font-semibold text-black">Messages</h1>
             <div className="flex items-center space-x-4">
               <PhoneCall className="h-6 w-6 text-gray-700" />
@@ -19,7 +19,7 @@ const Index = () => {
           </div>
         </div>
         <Stories />
-        <ChatList searchQuery="" />
+        <ChatList />
       </div>
     </div>
   );
