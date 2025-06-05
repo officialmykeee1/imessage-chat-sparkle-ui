@@ -1,5 +1,7 @@
+
 import { useState } from "react";
 import ChatItem from "./ChatItem";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Chat {
   id: string;
@@ -80,15 +82,33 @@ const ChatList = () => {
     },
   ]);
 
+  const [loading, setLoading] = useState(false);
+
+  if (loading) {
+    return (
+      <div className="bg-white">
+        {Array.from({ length: 8 }).map((_, index) => (
+          <div key={index} className="px-4 py-3">
+            <div className="flex items-center space-x-3">
+              <Skeleton className="w-12 h-12 rounded-full" />
+              <div className="flex-1 space-y-2">
+                <div className="flex items-center justify-between">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-3 w-12" />
+                </div>
+                <Skeleton className="h-3 w-40" />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white">
-      {chats.map((chat, index) => (
-        <div key={chat.id}>
-          <ChatItem chat={chat} />
-          {index < chats.length - 1 && (
-            <div className="ml-16 border-b border-gray-200"></div>
-          )}
-        </div>
+      {chats.map((chat) => (
+        <ChatItem key={chat.id} chat={chat} />
       ))}
     </div>
   );
