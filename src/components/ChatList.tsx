@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import ChatItem from "./ChatItem";
 
 interface Chat {
@@ -12,11 +12,7 @@ interface Chat {
   isSent?: boolean;
 }
 
-interface ChatListProps {
-  searchQuery: string;
-}
-
-const ChatList = ({ searchQuery }: ChatListProps) => {
+const ChatList = () => {
   const [chats] = useState<Chat[]>([
     {
       id: "1",
@@ -84,31 +80,16 @@ const ChatList = ({ searchQuery }: ChatListProps) => {
     },
   ]);
 
-  const filteredChats = useMemo(() => {
-    if (!searchQuery.trim()) return chats;
-    
-    return chats.filter(chat => 
-      chat.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      chat.lastMessage.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }, [chats, searchQuery]);
-
   return (
     <div className="bg-white">
-      {filteredChats.length === 0 && searchQuery.trim() ? (
-        <div className="px-4 py-8 text-center text-gray-500">
-          No results found for "{searchQuery}"
+      {chats.map((chat, index) => (
+        <div key={chat.id}>
+          <ChatItem chat={chat} />
+          {index < chats.length - 1 && (
+            <div className="ml-16 border-b border-gray-200"></div>
+          )}
         </div>
-      ) : (
-        filteredChats.map((chat, index) => (
-          <div key={chat.id}>
-            <ChatItem chat={chat} />
-            {index < filteredChats.length - 1 && (
-              <div className="ml-16 border-b border-gray-200"></div>
-            )}
-          </div>
-        ))
-      )}
+      ))}
     </div>
   );
 };

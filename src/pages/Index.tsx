@@ -2,29 +2,24 @@
 import { useState } from "react";
 import ChatList from "@/components/ChatList";
 import Stories from "@/components/Stories";
-import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { MessageCircle, PhoneCall, Settings } from "lucide-react";
 
 const Index = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="max-w-sm mx-auto bg-white min-h-screen">
         <div className="bg-white px-4 py-3 border-b border-gray-200">
-          <h1 className="text-xl font-semibold text-black text-center mb-3">Messages</h1>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <Input
-              placeholder="Search"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 bg-gray-100 border-gray-200 rounded-full h-9"
-            />
+          <div className="flex items-center justify-between">
+            <MessageCircle className="h-6 w-6 text-gray-700" />
+            <h1 className="text-xl font-semibold text-black">Messages</h1>
+            <div className="flex items-center space-x-4">
+              <PhoneCall className="h-6 w-6 text-gray-700" />
+              <Settings className="h-6 w-6 text-gray-700" />
+            </div>
           </div>
         </div>
         <Stories />
-        <ChatList searchQuery={searchQuery} />
+        <ChatList searchQuery="" />
       </div>
     </div>
   );
