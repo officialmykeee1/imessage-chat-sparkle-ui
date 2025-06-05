@@ -1,4 +1,3 @@
-
 interface Story {
   id: string;
   username: string;
@@ -49,7 +48,7 @@ const Stories = () => {
   ];
 
   return (
-    <div className="bg-white py-3" style={{ boxShadow: '0 1px 0 0 rgba(0, 0, 0, 0.1)' }}>
+    <div className="bg-white py-3">
       <div className="overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <div className="flex space-x-4 px-4" style={{ width: 'max-content' }}>
           {stories.map((story) => (
