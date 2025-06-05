@@ -1,4 +1,3 @@
-
 interface Story {
   id: string;
   username: string;
@@ -19,7 +18,7 @@ const Stories = () => {
     {
       id: "1",
       username: "Emily",
-      avatar: "https://images.unsplash.com/photo-1494790108755-2616b332c63d?w=400&h=400&fit=crop&crop=face",
+      avatar: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=400&h=400&fit=crop&crop=face",
       hasNewStory: true,
     },
     {
