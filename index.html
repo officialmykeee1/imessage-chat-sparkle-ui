@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -295,6 +294,43 @@
             }
         }
 
+        /* Stories skeleton styles */
+        .skeleton-stories-container {
+            background-color: white;
+            padding: 12px 0;
+        }
+
+        .skeleton-stories-list {
+            display: flex;
+            gap: 16px;
+            padding: 0 16px;
+            width: max-content;
+        }
+
+        .skeleton-story-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .skeleton-story-avatar {
+            width: 64px;
+            height: 64px;
+            background-color: #e5e7eb;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .skeleton-story-name {
+            height: 12px;
+            width: 50px;
+            background-color: #e5e7eb;
+            border-radius: 3px;
+        }
+
+        /* Chat skeleton styles */
         .skeleton-chat-item {
             padding: 12px 16px;
         }
@@ -380,17 +416,26 @@
                     </svg>
                     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="12" cy="12" r="3"/>
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
                     </svg>
                 </div>
             </div>
         </div>
 
         <!-- Stories -->
-        <div class="stories-container">
+        <div class="stories-container" id="storiesContainer">
             <div class="stories-scroll">
                 <div class="stories-list" id="storiesList">
                     <!-- Stories will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Stories Loading skeleton (hidden by default) -->
+        <div class="skeleton-stories-container hidden" id="storiesLoadingSkeleton">
+            <div class="stories-scroll">
+                <div class="skeleton-stories-list" id="skeletonStoriesList">
+                    <!-- Skeleton stories will be populated by JavaScript -->
                 </div>
             </div>
         </div>
@@ -601,6 +646,24 @@
             });
         }
 
+        // Function to render stories skeleton loading
+        function renderStoriesSkeleton() {
+            const skeletonStoriesList = document.getElementById('skeletonStoriesList');
+            skeletonStoriesList.innerHTML = '';
+
+            for (let i = 0; i < 6; i++) {
+                const skeletonStoryElement = document.createElement('div');
+                skeletonStoryElement.className = 'skeleton-story-item';
+
+                skeletonStoryElement.innerHTML = `
+                    <div class="skeleton skeleton-story-avatar"></div>
+                    <div class="skeleton skeleton-story-name"></div>
+                `;
+
+                skeletonStoriesList.appendChild(skeletonStoryElement);
+            }
+        }
+
         // Function to render skeleton loading
         function renderSkeleton() {
             const loadingSkeleton = document.getElementById('loadingSkeleton');
@@ -633,19 +696,29 @@
 
         // Function to show loading state
         function showLoading() {
+            // Hide real content
+            document.getElementById('storiesContainer').classList.add('hidden');
             document.getElementById('chatList').classList.add('hidden');
+            
+            // Show skeleton content
+            document.getElementById('storiesLoadingSkeleton').classList.remove('hidden');
             document.getElementById('loadingSkeleton').classList.remove('hidden');
         }
 
         // Function to hide loading state
         function hideLoading() {
+            // Hide skeleton content
+            document.getElementById('storiesLoadingSkeleton').classList.add('hidden');
             document.getElementById('loadingSkeleton').classList.add('hidden');
+            
+            // Show real content
+            document.getElementById('storiesContainer').classList.remove('hidden');
             document.getElementById('chatList').classList.remove('hidden');
         }
 
         // Initialize the app
         function init() {
-            renderStories();
+            renderStoriesSkeleton();
             renderSkeleton();
             
             // Simulate loading
@@ -653,6 +726,7 @@
             
             setTimeout(() => {
                 hideLoading();
+                renderStories();
                 renderChats();
             }, 1000);
         }
