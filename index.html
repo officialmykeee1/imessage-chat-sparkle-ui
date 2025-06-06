@@ -308,6 +308,9 @@
         .skeleton-avatar {
             width: 48px;
             height: 48px;
+            background-color: #e5e7eb;
+            border-radius: 50%;
+            flex-shrink: 0;
         }
 
         .skeleton-details {
@@ -321,21 +324,40 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            margin-bottom: 4px;
         }
 
         .skeleton-name {
-            height: 16px;
-            width: 96px;
+            height: 14px;
+            background-color: #e5e7eb;
+            border-radius: 3px;
+            width: 120px;
         }
 
         .skeleton-time {
             height: 12px;
-            width: 48px;
+            background-color: #e5e7eb;
+            border-radius: 3px;
+            width: 50px;
         }
 
         .skeleton-message {
             height: 12px;
-            width: 160px;
+            background-color: #e5e7eb;
+            border-radius: 3px;
+            width: 200px;
+        }
+
+        .skeleton-message.short {
+            width: 150px;
+        }
+
+        .skeleton-message.medium {
+            width: 180px;
+        }
+
+        .skeleton-message.long {
+            width: 220px;
         }
 
         .hidden {
@@ -584,19 +606,23 @@
             const loadingSkeleton = document.getElementById('loadingSkeleton');
             loadingSkeleton.innerHTML = '';
 
+            const messageWidths = ['short', 'medium', 'long', '', 'medium', 'short', 'long', ''];
+
             for (let i = 0; i < 8; i++) {
                 const skeletonElement = document.createElement('div');
                 skeletonElement.className = 'skeleton-chat-item';
 
+                const messageClass = messageWidths[i] ? `skeleton-message ${messageWidths[i]}` : 'skeleton-message';
+
                 skeletonElement.innerHTML = `
                     <div class="skeleton-chat-content">
-                        <div class="skeleton skeleton-circle skeleton-avatar"></div>
+                        <div class="skeleton skeleton-avatar"></div>
                         <div class="skeleton-details">
                             <div class="skeleton-header">
                                 <div class="skeleton skeleton-name"></div>
                                 <div class="skeleton skeleton-time"></div>
                             </div>
-                            <div class="skeleton skeleton-message"></div>
+                            <div class="skeleton ${messageClass}"></div>
                         </div>
                     </div>
                 `;
