@@ -1,24 +1,638 @@
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>imessage-chat-sparkle-ui</title>
-    <meta name="description" content="Lovable Generated Project" />
-    <meta name="author" content="Lovable" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <meta property="og:title" content="imessage-chat-sparkle-ui" />
-    <meta property="og:description" content="Lovable Generated Project" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f3f4f6;
+            min-height: 100vh;
+        }
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@lovable_dev" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-  </head>
+        .app-container {
+            max-width: 384px;
+            margin: 0 auto;
+            background-color: white;
+            min-height: 100vh;
+        }
 
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+        /* Header styles */
+        .header {
+            background-color: white;
+            padding: 12px 16px;
+            box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: black;
+        }
+
+        .header-icons {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            color: #374151;
+        }
+
+        .messages-icon {
+            color: #3b82f6;
+            fill: #3b82f6;
+        }
+
+        /* Stories section */
+        .stories-container {
+            background-color: white;
+            padding: 12px 0;
+        }
+
+        .stories-scroll {
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .stories-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .stories-list {
+            display: flex;
+            gap: 16px;
+            padding: 0 16px;
+            width: max-content;
+        }
+
+        .story-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .story-avatar-container {
+            position: relative;
+        }
+
+        .story-avatar-ring {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            padding: 2px;
+        }
+
+        .story-avatar-ring.your-story {
+            background-color: #d1d5db;
+        }
+
+        .story-avatar-ring.has-story {
+            background: linear-gradient(45deg, #fbbf24, #ef4444, #a855f7);
+        }
+
+        .story-avatar-bg {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            border-radius: 50%;
+            padding: 2px;
+        }
+
+        .story-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .story-plus {
+            position: absolute;
+            bottom: -4px;
+            right: -4px;
+            width: 24px;
+            height: 24px;
+            background-color: #3b82f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .story-username {
+            font-size: 12px;
+            color: #374151;
+            text-align: center;
+            max-width: 70px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Chat list styles */
+        .chat-list {
+            background-color: white;
+        }
+
+        .chat-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background-color 0.1s;
+            background-color: white;
+        }
+
+        .chat-item:hover {
+            background-color: #f9fafb;
+        }
+
+        .chat-item.pressed {
+            background-color: #e5e7eb;
+        }
+
+        .chat-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-avatar-container {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .chat-avatar {
+            width: 48px;
+            height: 48px;
+            background-color: #9ca3af;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .online-indicator {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 14px;
+            height: 14px;
+            background-color: #10b981;
+            border: 2px solid white;
+            border-radius: 50%;
+        }
+
+        .chat-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .chat-header {
+            display: flex;
+            align-items: center;
+            justify-content: between;
+            margin-bottom: 2px;
+        }
+
+        .chat-name {
+            font-weight: 600;
+            color: black;
+            font-size: 16px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1;
+        }
+
+        .chat-meta {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: auto;
+        }
+
+        .chat-timestamp {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .unread-badge {
+            background-color: #3b82f6;
+            color: white;
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 4px;
+        }
+
+        .sent-indicator {
+            width: 16px;
+            height: 16px;
+            margin-left: 4px;
+        }
+
+        .chat-message {
+            font-size: 14px;
+            color: #4b5563;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .chat-message.unread {
+            color: black;
+            font-weight: 500;
+        }
+
+        /* Skeleton loading styles */
+        .skeleton {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            background-color: #e5e7eb;
+            border-radius: 4px;
+        }
+
+        .skeleton-circle {
+            border-radius: 50%;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .skeleton-chat-item {
+            padding: 12px 16px;
+        }
+
+        .skeleton-chat-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .skeleton-avatar {
+            width: 48px;
+            height: 48px;
+        }
+
+        .skeleton-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .skeleton-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .skeleton-name {
+            height: 16px;
+            width: 96px;
+        }
+
+        .skeleton-time {
+            height: 12px;
+            width: 48px;
+        }
+
+        .skeleton-message {
+            height: 12px;
+            width: 160px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <svg class="icon messages-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                <h1 class="header-title">Messages</h1>
+                <div class="header-icons">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                    </svg>
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stories -->
+        <div class="stories-container">
+            <div class="stories-scroll">
+                <div class="stories-list" id="storiesList">
+                    <!-- Stories will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat List -->
+        <div class="chat-list" id="chatList">
+            <!-- Chat items will be populated by JavaScript -->
+        </div>
+
+        <!-- Loading skeleton (hidden by default) -->
+        <div class="chat-list hidden" id="loadingSkeleton">
+            <!-- Skeleton items will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // Stories data
+        const stories = [
+            {
+                id: "your-story",
+                username: "Your story",
+                avatar: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=400&fit=crop&crop=face",
+                hasNewStory: false,
+                isYourStory: true,
+            },
+            {
+                id: "1",
+                username: "Emily",
+                avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
+                hasNewStory: true,
+            },
+            {
+                id: "2",
+                username: "Michael",
+                avatar: "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?w=400&h=400&fit=crop&crop=face",
+                hasNewStory: true,
+            },
+            {
+                id: "3",
+                username: "Sarah",
+                avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
+                hasNewStory: true,
+            },
+            {
+                id: "4",
+                username: "David",
+                avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
+                hasNewStory: true,
+            },
+            {
+                id: "5",
+                username: "Jessica",
+                avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=face",
+                hasNewStory: true,
+            },
+        ];
+
+        // Chat data
+        const chats = [
+            {
+                id: "1",
+                name: "Emma Wilson",
+                lastMessage: "Hey! Are we still on for dinner tonight?",
+                timestamp: "2:34 PM",
+                avatar: "EW",
+                unreadCount: 2,
+                isOnline: true,
+            },
+            {
+                id: "2",
+                name: "Family",
+                lastMessage: "Mom: Don't forget about Sunday brunch!",
+                timestamp: "1:15 PM",
+                avatar: "F",
+                unreadCount: 5,
+            },
+            {
+                id: "3",
+                name: "Alex Chen",
+                lastMessage: "Thanks for the help with the project 👍",
+                timestamp: "11:45 AM",
+                avatar: "AC",
+                isOnline: true,
+                isSent: true,
+            },
+            {
+                id: "4",
+                name: "Sarah Johnson",
+                lastMessage: "The photos from the trip are amazing!",
+                timestamp: "Yesterday",
+                avatar: "SJ",
+            },
+            {
+                id: "5",
+                name: "Work Team",
+                lastMessage: "You: Sounds good, see you tomorrow",
+                timestamp: "Yesterday",
+                avatar: "WT",
+                isSent: true,
+            },
+            {
+                id: "6",
+                name: "David Park",
+                lastMessage: "Let's catch up this weekend",
+                timestamp: "Monday",
+                avatar: "DP",
+            },
+            {
+                id: "7",
+                name: "Coffee Chat",
+                lastMessage: "Lisa: That new café downtown is great!",
+                timestamp: "Sunday",
+                avatar: "CC",
+                unreadCount: 1,
+            },
+            {
+                id: "8",
+                name: "Mom",
+                lastMessage: "Love you sweetie ❤️",
+                timestamp: "Saturday",
+                avatar: "M",
+                isOnline: true,
+            },
+        ];
+
+        // Function to render stories
+        function renderStories() {
+            const storiesList = document.getElementById('storiesList');
+            storiesList.innerHTML = '';
+
+            stories.forEach(story => {
+                const storyElement = document.createElement('div');
+                storyElement.className = 'story-item';
+
+                const avatarRingClass = story.isYourStory ? 'your-story' : (story.hasNewStory ? 'has-story' : 'your-story');
+
+                storyElement.innerHTML = `
+                    <div class="story-avatar-container">
+                        <div class="story-avatar-ring ${avatarRingClass}">
+                            <div class="story-avatar-bg">
+                                <img src="${story.avatar}" alt="${story.username}" class="story-avatar">
+                            </div>
+                        </div>
+                        ${story.isYourStory ? '<div class="story-plus">+</div>' : ''}
+                    </div>
+                    <span class="story-username">${story.username}</span>
+                `;
+
+                storiesList.appendChild(storyElement);
+            });
+        }
+
+        // Function to render chat items
+        function renderChats() {
+            const chatList = document.getElementById('chatList');
+            chatList.innerHTML = '';
+
+            chats.forEach(chat => {
+                const chatElement = document.createElement('div');
+                chatElement.className = 'chat-item';
+
+                const onlineIndicator = chat.isOnline ? '<div class="online-indicator"></div>' : '';
+                const unreadBadge = chat.unreadCount ? `<div class="unread-badge">${chat.unreadCount}</div>` : '';
+                const sentIndicator = chat.isSent && !chat.unreadCount ? `
+                    <div class="sent-indicator">
+                        <svg viewBox="0 0 16 16" style="width: 16px; height: 16px; color: #3b82f6; fill: currentColor;">
+                            <path d="M15.854 5.354L6.5 14.707a.5.5 0 0 1-.708 0L2.146 11.06a.5.5 0 1 1 .708-.708L6.5 13.998l8.646-8.646a.5.5 0 0 1 .708.708z"/>
+                        </svg>
+                    </div>
+                ` : '';
+
+                const messageClass = chat.unreadCount ? 'unread' : '';
+
+                chatElement.innerHTML = `
+                    <div class="chat-content">
+                        <div class="chat-avatar-container">
+                            <div class="chat-avatar">${chat.avatar}</div>
+                            ${onlineIndicator}
+                        </div>
+                        <div class="chat-details">
+                            <div class="chat-header">
+                                <h3 class="chat-name">${chat.name}</h3>
+                                <div class="chat-meta">
+                                    <span class="chat-timestamp">${chat.timestamp}</span>
+                                    ${unreadBadge}
+                                    ${sentIndicator}
+                                </div>
+                            </div>
+                            <p class="chat-message ${messageClass}">${chat.lastMessage}</p>
+                        </div>
+                    </div>
+                `;
+
+                // Add press effect
+                chatElement.addEventListener('mousedown', () => {
+                    chatElement.classList.add('pressed');
+                });
+
+                chatElement.addEventListener('mouseup', () => {
+                    chatElement.classList.remove('pressed');
+                });
+
+                chatElement.addEventListener('mouseleave', () => {
+                    chatElement.classList.remove('pressed');
+                });
+
+                chatList.appendChild(chatElement);
+            });
+        }
+
+        // Function to render skeleton loading
+        function renderSkeleton() {
+            const loadingSkeleton = document.getElementById('loadingSkeleton');
+            loadingSkeleton.innerHTML = '';
+
+            for (let i = 0; i < 8; i++) {
+                const skeletonElement = document.createElement('div');
+                skeletonElement.className = 'skeleton-chat-item';
+
+                skeletonElement.innerHTML = `
+                    <div class="skeleton-chat-content">
+                        <div class="skeleton skeleton-circle skeleton-avatar"></div>
+                        <div class="skeleton-details">
+                            <div class="skeleton-header">
+                                <div class="skeleton skeleton-name"></div>
+                                <div class="skeleton skeleton-time"></div>
+                            </div>
+                            <div class="skeleton skeleton-message"></div>
+                        </div>
+                    </div>
+                `;
+
+                loadingSkeleton.appendChild(skeletonElement);
+            }
+        }
+
+        // Function to show loading state
+        function showLoading() {
+            document.getElementById('chatList').classList.add('hidden');
+            document.getElementById('loadingSkeleton').classList.remove('hidden');
+        }
+
+        // Function to hide loading state
+        function hideLoading() {
+            document.getElementById('loadingSkeleton').classList.add('hidden');
+            document.getElementById('chatList').classList.remove('hidden');
+        }
+
+        // Initialize the app
+        function init() {
+            renderStories();
+            renderSkeleton();
+            
+            // Simulate loading
+            showLoading();
+            
+            setTimeout(() => {
+                hideLoading();
+                renderChats();
+            }, 1000);
+        }
+
+        // Start the app when the page loads
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
 </html>
