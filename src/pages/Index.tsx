@@ -2,7 +2,7 @@
 import { useState } from "react";
 import ChatList from "@/components/ChatList";
 import Stories from "@/components/Stories";
-import { MessageCircle, PhoneCall, Settings } from "lucide-react";
+import { MessageCircle, PhoneCall, Cog } from "lucide-react";
 
 const Index = () => {
   return (
@@ -14,7 +14,7 @@ const Index = () => {
             <h1 className="text-xl font-semibold text-black">Messages</h1>
             <div className="flex items-center space-x-4">
               <PhoneCall className="h-6 w-6 text-gray-700" />
-              <Settings className="h-6 w-6 text-gray-700" />
+              <Cog className="h-6 w-6 text-gray-700" />
             </div>
           </div>
         </div>
