@@ -18,7 +18,7 @@ const Stories = () => {
     {
       id: "1",
       username: "Emily",
-      avatar: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=400&h=400&fit=crop&crop=face",
+      avatar: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=400&fit=crop&crop=face",
       hasNewStory: true,
     },
     {
